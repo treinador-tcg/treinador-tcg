@@ -1,0 +1,66 @@
+# Fichas do meta: toda segunda-feira baixa os torneios online da Limitless TCG
+# e grava programa/meta/fichas.json. O painel busca esse arquivo sozinho.
+# (Repositório de distribuição: o programa aqui é a versão construída.)
+name: Fichas do meta
+
+on:
+  schedule:
+    - cron: '23 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Uma rodada por vez; se chegar outra enquanto uma roda, a mais nova espera.
+concurrency:
+  group: fichas
+  cancel-in-progress: false
+
+jobs:
+  gerar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Gerar fichas
+        id: gerar
+        env:
+          LIMITLESS_KEY: ${{ secrets.LIMITLESS_KEY }}
+        run: node programa/ferramentas/gerar-fichas.mjs
+      # Grava em cima da versão mais nova do repositório (outra rodada ou uma
+      # atualização do programa pode ter chegado enquanto esta baixava os
+      # torneios). As fichas só entram se a geração deu certo; o relatório
+      # entra sempre, para conferir falhas.
+      - name: Gravar no repositório
+        if: always()
+        env:
+          GERACAO: ${{ steps.gerar.outcome }}
+        run: |
+          set -e
+          mkdir -p "$RUNNER_TEMP/novas"
+          if [ "$GERACAO" = "success" ] && [ -f programa/meta/fichas.json ]; then
+            cp programa/meta/fichas.json "$RUNNER_TEMP/novas/"
+          fi
+          if [ -f programa/meta/relatorio-geracao.txt ]; then
+            cp programa/meta/relatorio-geracao.txt "$RUNNER_TEMP/novas/"
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for tentativa in 1 2 3; do
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            mkdir -p programa/meta
+            cp "$RUNNER_TEMP"/novas/* programa/meta/ 2>/dev/null || true
+            git add programa/meta
+            if git diff --cached --quiet; then echo "Nada mudou."; exit 0; fi
+            git commit -q -m "Fichas do meta: $(date -u +%F)"
+            if git push -q origin HEAD:main; then echo "Gravado."; exit 0; fi
+            echo "Outra mudança chegou antes; tentando de novo ($tentativa)."
+            sleep 5
+          done
+          exit 1

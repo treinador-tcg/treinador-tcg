@@ -1,0 +1,22 @@
+Gerado em 2026-11-19T19:14:28.438Z (618 s)
+Torneios: 109; jogadores com arquétipo: 10735; partidas entre arquétipos diferentes: 22741
+Listas lidas: 10735; listas vazias: 0; sem arquétipo: 517
+Formato das listas: objeto: pokemon, trainer, energy
+Amostra de lista: {"pokemon":[{"count":4,"set":"MEG","number":"104","name":"Mega Kangaskhan ex"},{"count":2,"set":"SSP","number":"76","name":"Latias ex"},{"count":2,"set":"DLR","number":"88","name":"Talonflame ex"},{"count":2,"set":"DRI","number":"39","name":"Ethan's Ho-Oh ex"},{"count":2,"set":"POR","number":"62","name":"Meowth ex"},{"count":2,"set":"DLR","number":"84","name":"Mega Rayquaza ex"},{"count":1,"set":"
+Arquétipos nas fichas: 40
+  Dragapult: 1069 jogadores (10.0%), 27 cartas, 39 confrontos
+  Mega Rayquaza: 734 jogadores (6.8%), 26 cartas, 39 confrontos
+  Basic Box: 603 jogadores (5.6%), 35 cartas, 39 confrontos
+  Slowking: 540 jogadores (5.0%), 32 cartas, 39 confrontos
+  Alakazam Dudunsparce: 431 jogadores (4.0%), 31 cartas, 39 confrontos
+  Ogerpon Meganium Hydrapple: 410 jogadores (3.8%), 27 cartas, 39 confrontos
+  N's Zoroark: 395 jogadores (3.7%), 35 cartas, 39 confrontos
+  Dhelmise: 379 jogadores (3.5%), 30 cartas, 39 confrontos
+  Mega Excadrill: 311 jogadores (2.9%), 37 cartas, 39 confrontos
+  Crustle: 266 jogadores (2.5%), 38 cartas, 39 confrontos
+  Dragapult Dudunsparce: 262 jogadores (2.4%), 28 cartas, 39 confrontos
+  Talonflame Dusknoir: 248 jogadores (2.3%), 32 cartas, 39 confrontos
+  Lopunny Dudunsparce: 224 jogadores (2.1%), 38 cartas, 38 confrontos
+  Dragapult Blaziken: 217 jogadores (2.0%), 31 cartas, 39 confrontos
+  Festival Lead: 212 jogadores (2.0%), 30 cartas, 39 confrontos
+Cartas que a base não reconheceu (nome: listas): nenhuma

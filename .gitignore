@@ -1,0 +1,9 @@
+dados/
+convite.json
+convite-*.json
+*.zip
+runtime/
+versao-anterior/
+node_modules/
+*.tmp
+*.log

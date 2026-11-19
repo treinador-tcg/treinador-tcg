@@ -1,0 +1,22 @@
+TREINADOR TCG — LICENÇA DE USO
+
+Copyright (c) 2026 Treinador TCG.
+Todos os direitos reservados.
+
+1. Você pode baixar, instalar e usar o Treinador TCG no seu computador, para
+   uso pessoal e não comercial.
+2. Não é permitido, sem autorização por escrito do titular:
+   a) copiar, vender, alugar, sublicenciar ou redistribuir o programa, no todo
+      ou em parte, inclusive em outro produto ou serviço;
+   b) modificar, traduzir ou criar obras derivadas do programa;
+   c) descompilar, desofuscar, fazer engenharia reversa ou tentar extrair o
+      código-fonte, as instruções de análise ou os dados do programa, salvo
+      nos limites que a lei expressamente permitir;
+   d) remover ou alterar avisos de direitos autorais ou desta licença.
+3. O programa é fornecido "no estado em que se encontra", sem garantia de
+   qualquer tipo. O titular não responde por danos decorrentes do uso.
+4. Esta licença termina automaticamente se qualquer condição acima for
+   descumprida.
+
+Lei aplicável: Lei 9.609/1998 (Lei do Software) e Lei 9.610/1998 (Direitos
+Autorais), Brasil.
