@@ -1,1 +1,1 @@
-wilson-martinsribeiro/treinador-tcg
+treinador-tcg/treinador-tcg
