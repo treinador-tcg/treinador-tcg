@@ -1,8 +1,10 @@
 # Arruma a pasta das versoes ate a 1.1.x, que guardavam tudo solto ao lado
-# dos atalhos, no formato novo: so "INICIAR TREINADOR TCG", "ATUALIZAR" e a
-# pasta oculta "programa". Os dados (partidas, senhas, chave) sao MOVIDOS para
-# programa\dados, nunca apagados. So apaga arquivos do proprio programa, por
-# nome, e nunca mexe numa copia de desenvolvimento (pasta com .git).
+# dos atalhos, no formato novo: so "INICIAR TREINADOR TCG" e a pasta oculta
+# "programa". Tambem apaga o "ATUALIZAR" das versoes ate a 1.7.x (agora o
+# programa se atualiza sozinho quando abre). Os dados (partidas, senhas,
+# chave) sao MOVIDOS para programa\dados, nunca apagados. So apaga arquivos
+# do proprio programa, por nome, e nunca mexe numa copia de desenvolvimento
+# (pasta com .git).
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
@@ -60,7 +62,7 @@ if (Test-Path -LiteralPath $deRuntime) {
 }
 
 # 3) Arquivos soltos da versao antiga: apagados, so os que sao do programa.
-$arquivos = @('painel.mjs', 'painel.html', 'package.json', 'CHANGELOG.md', 'COMECE-AQUI.md', 'README.md', 'VERSAO.txt', 'CONECTAR-CLAUDE.bat', 'INICIAR-PAINEL.bat', '.gitattributes', '.gitignore')
+$arquivos = @('painel.mjs', 'painel.html', 'package.json', 'CHANGELOG.md', 'COMECE-AQUI.md', 'README.md', 'VERSAO.txt', 'CONECTAR-CLAUDE.bat', 'INICIAR-PAINEL.bat', 'ATUALIZAR.bat', '.gitattributes', '.gitignore')
 $pastas = @('src', 'cartas', 'ferramentas', 'testes', 'versao-anterior', '.github')
 $sobrou = @()
 foreach ($nome in ($arquivos + $pastas)) {
@@ -74,6 +76,6 @@ if (Test-Path -LiteralPath $testes) { try { Remove-Item -LiteralPath $testes -Re
 if ($sobrou.Count -gt 0) {
   Write-Host ('  Nao consegui apagar: ' + ($sobrou -join ', ') + '. Tento de novo na proxima vez.')
 }
-Write-Host '  Pronto: agora aparecem so INICIAR TREINADOR TCG e ATUALIZAR.'
+Write-Host '  Pronto: agora aparece so o INICIAR TREINADOR TCG.'
 Write-Host ''
 exit 0

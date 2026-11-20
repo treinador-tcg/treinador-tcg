@@ -37,4 +37,5 @@
   Conectar e siga a janela.
 - **Pede para confirmar a licença:** conecte o computador à internet e
   clique em **Confirmar agora**.
-- **Atualizar:** feche a janela preta e dê duplo clique em `ATUALIZAR`.
+- **Atualizar:** não precisa fazer nada. Toda vez que você abre pelo
+  `INICIAR TREINADOR TCG`, ele confere se há versão nova e instala sozinho.

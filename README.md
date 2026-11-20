@@ -22,8 +22,9 @@ O passo a passo completo está em `programa/COMECE-AQUI.md` (no painel:
 
 ## Atualizar
 
-Feche a janela preta e dê duplo clique em **`ATUALIZAR`**. Partidas, senhas e
-chave continuam iguais.
+Não precisa fazer nada: toda vez que você abre pelo **`INICIAR TREINADOR
+TCG`**, ele confere se há versão nova e instala sozinho (precisa de internet).
+Partidas, senhas e licença continuam iguais.
 
 ---
 
