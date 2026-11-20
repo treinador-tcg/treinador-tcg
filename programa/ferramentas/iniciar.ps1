@@ -1,10 +1,13 @@
 # Abre o Treinador TCG. Chamado pelo "INICIAR TREINADOR TCG.bat".
 #  1) Arruma a pasta de versoes antigas, se precisar.
-#  2) Confere se ha versao nova e instala sozinho (sem internet, abre a
+#  2) Baixa o Node.js na primeira vez (o atualizador usa o Node para conferir
+#     a assinatura das versoes novas).
+#  3) Confere se ha versao nova e instala sozinho (sem internet, abre a
 #     versao que ja esta aqui e tenta de novo na proxima vez).
-#  3) Baixa o Node.js na primeira vez.
 #  4) Abre o painel. Se o painel pedir (botao "Atualizar agora"), atualiza e
-#     abre de novo, sem abrir outra aba no navegador.
+#     abre de novo, sem abrir outra aba no navegador. Se o painel avisar que
+#     os arquivos foram alterados ou estao danificados (codigo 76), baixa de
+#     novo a versao oficial e abre de novo.
 # Codigos de saida: 0 = fechou normalmente; 3 = erro ja explicado na tela
 # (com pausa). Qualquer outro (1, 2) e inesperado: o INICIAR .bat procura uma
 # versao corrigida.
@@ -17,6 +20,7 @@ $topo = Split-Path -Parent $app
 $desenvolvimento = (Test-Path -LiteralPath (Join-Path $topo '.git')) -or (Test-Path -LiteralPath (Join-Path $app '.git'))
 # Codigo de saida do painel que quer dizer "atualize e me abra de novo".
 $PEDIU_ATUALIZAR = 75
+$ARQUIVOS_ALTERADOS = 76
 $ERRO_AVISADO = 3
 
 try { $Host.UI.RawUI.WindowTitle = 'Treinador TCG' } catch {}
@@ -97,10 +101,6 @@ if (-not $desenvolvimento) {
   if (Test-Path -LiteralPath $velho) { try { Remove-Item -LiteralPath $velho -Force } catch {} }
 }
 
-if (-not $JaAtualizou) {
-  if (Atualizar-Agora) { Abrir-De-Novo }
-}
-
 # Motor do programa: o Node.js baixado aqui ou o do computador (20 ou mais).
 $node = Join-Path $app 'runtime\node\node.exe'
 if (-not (Test-Path -LiteralPath $node)) {
@@ -132,11 +132,22 @@ if (-not $node) {
   Write-Host ''
 }
 
+if (-not $JaAtualizou) {
+  if (Atualizar-Agora) { Abrir-De-Novo }
+}
+
+# O painel recusa abrir com estas variaveis (depuracao, codigo injetado,
+# certificados de terceiros). Quem abre pelo INICIAR nunca e afetado.
+foreach ($v in @('NODE_OPTIONS', 'NODE_EXTRA_CA_CERTS', 'NODE_TLS_REJECT_UNAUTHORIZED', 'NODE_DEBUG', 'NODE_V8_COVERAGE')) {
+  Remove-Item -Path ('Env:' + $v) -ErrorAction SilentlyContinue
+}
+
 # Avisa o painel que ele pode pedir "atualize e me abra de novo".
 # (O painel roda direto nesta janela, fora de funcao, para nada capturar a
 # saida dele.)
 $env:TTCG_LANCADOR = '1'
 $painel = Join-Path $app 'painel.mjs'
+$jaReparou = $false
 while ($true) {
   & $node $painel
   $codigo = $LASTEXITCODE
@@ -147,6 +158,19 @@ while ($true) {
     $env:TTCG_NAO_ABRIR = '1'
     if (Atualizar-Agora) { Abrir-De-Novo }
     continue
+  }
+  if ($codigo -eq $ARQUIVOS_ALTERADOS) {
+    if (-not $jaReparou -and -not $desenvolvimento) {
+      $jaReparou = $true
+      Write-Host '  Vou baixar de novo a versao oficial do Treinador TCG...'
+      if ((Rodar-Script (Join-Path $ferramentas 'atualizar.ps1') '-Automatico -Reparar') -eq 10) { Abrir-De-Novo }
+    }
+    Write-Host ''
+    Write-Host '  Nao consegui reparar os arquivos agora. Conecte o computador a internet'
+    Write-Host '  e abra de novo. Se continuar, baixe o Treinador TCG de novo e extraia'
+    Write-Host '  por cima desta pasta (partidas e senhas continuam).'
+    Esperar
+    exit $ERRO_AVISADO
   }
   if ($codigo -ne 0) {
     Write-Host ''

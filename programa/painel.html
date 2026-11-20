@@ -122,7 +122,7 @@
         <td class="esconde-celular quieto">${dataHora(c.capturadaEm)}</td>
         <td>${c.nota!==null?`<span class="nota-mini">${c.nota}</span>`:'<span class="quieto">\u2014</span>'}</td>
         <td class="esconde-celular">${c.status==="analisada"?"":`<span class="etiqueta ${c.status==="erro"?"ruim":"aviso"}">${["aguardando","analisando"].includes(c.status)?'<span class="girando mini" aria-hidden="true"></span>':""}${esc(STATUS[c.status]||c.status)}</span>`}</td>
-      </tr>`).join("")||'<tr><td colspan="6" class="quieto">Nenhuma partida com esses filtros.</td></tr>',document.querySelectorAll("#corpo tr[data-id]").forEach(c=>{const p=()=>location.hash=`#/partida/${c.dataset.id}`;c.onclick=p,c.onkeydown=m=>m.key==="Enter"&&p()})};["#f-deck","#f-res","#f-arq"].forEach(i=>$(i).onchange=s),s()}let timerPartida=null,relogioPartida=null;async function telaPartida(a,o){clearInterval(timerPartida),clearInterval(relogioPartida);const[e,t]=await Promise.all([api("GET",`/api/partidas/${o}`),api("GET","/api/decks")]),s=e.analise,i=e.resumo,n=`${e.deckNome?esc(e.deckNome):"Seu deck"} <span class="quieto">contra</span> ${esc(i.arquetipo||"Desconhecido")}`,r=i.resultado==="vitoria"?"Vit\xF3ria":i.resultado==="derrota"?"Derrota":"Resultado n\xE3o identificado",d=i.comecou==="voce"?"Voc\xEA":i.comecou==="oponente"?"Oponente":"\u2014",c=s?.metricas,p=c?`${c.premios_voce} \xD7 ${c.premios_oponente}`:e.parser?.premios?`${e.parser.premios.voce} \xD7 ${e.parser.premios.oponente}`:"\u2014",m={};for(const l of s?.momentos??[])m[l.classificacao]=(m[l.classificacao]??0)+1;const u=`
+      </tr>`).join("")||'<tr><td colspan="6" class="quieto">Nenhuma partida com esses filtros.</td></tr>',document.querySelectorAll("#corpo tr[data-id]").forEach(c=>{const p=()=>location.hash=`#/partida/${c.dataset.id}`;c.onclick=p,c.onkeydown=m=>m.key==="Enter"&&p()})};["#f-deck","#f-res","#f-arq"].forEach(i=>$(i).onchange=s),s()}let timerPartida=null,relogioPartida=null;async function telaPartida(a,o){clearInterval(timerPartida),clearInterval(relogioPartida);const[e,t]=await Promise.all([api("GET",`/api/partidas/${o}`),api("GET","/api/decks")]),s=e.analise,i=e.resumo,n=`${e.deckNome?esc(e.deckNome):"Seu deck"} <span class="quieto">contra</span> ${esc(i.arquetipo||"Desconhecido")}`,r=i.resultado==="vitoria"?"Vit\xF3ria":i.resultado==="derrota"?"Derrota":"Resultado n\xE3o identificado",d=i.comecou==="voce"?"Voc\xEA":i.comecou==="oponente"?"Oponente":"\u2014",c=s?.metricas,p=c?`${esc(c.premios_voce)} \xD7 ${esc(c.premios_oponente)}`:e.parser?.premios?`${esc(e.parser.premios.voce)} \xD7 ${esc(e.parser.premios.oponente)}`:"\u2014",m={};for(const l of s?.momentos??[])m[l.classificacao]=(m[l.classificacao]??0)+1;const u=`
     <div class="carta"><div class="carta-dentro">
       <div class="carta-topo">
         <div>
@@ -130,14 +130,14 @@
           <div class="carta-sub">${dataHora(e.capturadaEm)}${i.deck?`, vers\xE3o ${i.deck.versao} do deck`:""}</div>
           <div class="resultado-faixa">${resultadoSelo(i.resultado)} ${r}</div>
         </div>
-        <div class="hp" aria-label="Nota ${s?s.nota_geral:"pendente"} de 100"><small>NOTA</small><strong>${s?s.nota_geral:"\xB7\xB7"}</strong></div>
+        <div class="hp" aria-label="Nota ${s?esc(s.nota_geral):"pendente"} de 100"><small>NOTA</small><strong>${s?esc(s.nota_geral):"\xB7\xB7"}</strong></div>
       </div>
       ${s?`<p class="carta-resumo">${esc(s.resumo)}</p>`:`<p class="carta-resumo quieto">${esc(STATUS[e.status]||e.status)}${e.status==="erro"&&e.erro?`: ${esc(e.erro)}`:""}${e.status==="tentar_depois"&&e.proximaTentativa?` (\xE0s ${new Date(e.proximaTentativa).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})})`:""}.</p>`}
       <div class="fatos">
         <div class="fato"><strong>${d}</strong><span>come\xE7ou</span></div>
         <div class="fato"><strong class="num">${esc(i.turnos??"\u2014")}</strong><span>turnos</span></div>
         <div class="fato"><strong class="num">${p}</strong><span>pr\xEAmios (voc\xEA \xD7 oponente)</span></div>
-        ${c?`<div class="fato"><strong class="num">${c.primeiro_ataque_turno||"\u2014"}</strong><span>turno do 1\xBA ataque</span></div>`:""}
+        ${c?`<div class="fato"><strong class="num">${esc(c.primeiro_ataque_turno||"\u2014")}</strong><span>turno do 1\xBA ataque</span></div>`:""}
         ${e.custo?e.custo.plano?e.custo.modelo==="codex"?'<div class="fato"><strong>ChatGPT</strong><span>an\xE1lise pela sua conta do ChatGPT</span></div>':'<div class="fato"><strong>plano</strong><span>an\xE1lise pelo seu plano do Claude</span></div>':`<div class="fato"><strong class="num">${usd(e.custo.usd)}</strong><span>custo da an\xE1lise</span></div>`:""}
       </div>
       ${metaPartidaHtml(e.meta)}
@@ -145,9 +145,9 @@
         <div class="contagem">${Object.keys(CLASSES).filter(l=>m[l]).map(l=>`<span class="etiqueta"><b class="t-${l}">${CLASSES[l].simbolo}</b>${m[l]} ${CLASSES[l].nome.toLowerCase()}</span>`).join("")}</div></div>
         ${v}<ol class="momentos">${s.momentos.map((l,g)=>`
           <li class="momento">
-            <div class="selo"><b class="k-${l.classificacao}" aria-hidden="true">${CLASSES[l.classificacao]?.simbolo??""}</b><span>T${l.turno}</span></div>
+            <div class="selo"><b class="k-${esc(l.classificacao)}" aria-hidden="true">${CLASSES[l.classificacao]?.simbolo??""}</b><span>T${esc(l.turno)}</span></div>
             <div>
-              <div class="classe t-${l.classificacao}">${CLASSES[l.classificacao]?.nome??""}${seloRevisao(l)}</div>
+              <div class="classe t-${esc(l.classificacao)}">${CLASSES[l.classificacao]?.nome??""}${seloRevisao(l)}</div>
               <h3>${esc(l.titulo)}</h3>
               <dl>
                 <dt>Voc\xEA fez</dt><dd>${esc(l.o_que_voce_fez)}</dd>
@@ -248,8 +248,8 @@
     <p class="quieto pequeno">Relat\xF3rio de ${dataHora(a.em)}, ${a.partidas} partidas, vers\xE3o ${a.versao}, ${esc(a.nomeModelo||"")}</p>
     <p>${esc(a.resumo)}</p>
     ${a.trocas.length?`<h3 style="margin:12px 0 8px">Trocas sugeridas</h3><table class="lista"><thead><tr><th>Sai</th><th>Entra</th><th>Por qu\xEA</th></tr></thead><tbody>
-      ${a.trocas.map(o=>`<tr><td>${o.sai?`${o.sai_qtd}x ${esc(o.sai)}`:"\u2014"}</td>
-        <td>${o.entra?`${o.entra_qtd}x ${esc(o.entraInfo?.pt||o.entra)}${o.entraInfo?.codigo?` <span class="quieto pequeno">${esc(o.entraInfo.codigo)} ${esc(o.entraInfo.numero)}</span>`:""}
+      ${a.trocas.map(o=>`<tr><td>${o.sai?`${esc(o.sai_qtd)}x ${esc(o.sai)}`:"\u2014"}</td>
+        <td>${o.entra?`${esc(o.entra_qtd)}x ${esc(o.entraInfo?.pt||o.entra)}${o.entraInfo?.codigo?` <span class="quieto pequeno">${esc(o.entraInfo.codigo)} ${esc(o.entraInfo.numero)}</span>`:""}
           ${o.entraInfo?.legal===!1?'<br><span class="etiqueta ruim">fora do Standard</span>':""}
           ${o.preco?.usd?`<br><span class="quieto pequeno">mercado ~${usd(o.preco.usd)}</span>`:""}
           ${o.linkLiga?`<br><a class="pequeno" href="${esc(o.linkLiga)}" target="_blank" rel="noopener">Buscar na Liga Pok\xE9mon</a>`:""}`:"\u2014"}</td>

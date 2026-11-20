@@ -5,9 +5,14 @@
 # (partidas, senhas, chave), programa\runtime (Node baixado) nem no convite.
 # Guarda a versao atual em programa\versao-anterior e volta para ela se a
 # copia der errado no meio.
-# Codigos de saida: 10 = instalou versao nova (so no -Automatico);
+# Antes de instalar, o painel instalado confere o pacote baixado: o
+# MANIFESTO.json dele tem de ser o que o servidor de licencas confirma para
+# aquela versao (resposta assinada), e cada arquivo tem de bater com o
+# manifesto. Pacote que nao e oficial ou veio alterado nao entra. -Reparar baixa de novo a versao publicada mesmo se for a mesma
+# (arquivos alterados ou danificados).
+# Codigos de saida: 10 = instalou (so no -Automatico);
 # 0 = nada a fazer ou sem internet; 1 = erro (so no modo manual).
-param([switch]$Automatico)
+param([switch]$Automatico, [switch]$Reparar)
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 try {
@@ -53,6 +58,38 @@ function Iguais($x, $y) {
   return $true
 }
 
+# Node para a conferencia: o baixado pelo INICIAR ou o do computador.
+function Achar-Node {
+  $n = Join-Path $app 'runtime\node\node.exe'
+  if (Test-Path -LiteralPath $n) { return $n }
+  $s = Get-Command node.exe -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+  if ($s) { return $s.Path }
+  return $null
+}
+
+# Roda "painel.mjs --verificar-pacote <pasta>" com o painel indicado e devolve
+# o codigo: 0 = oficial e inteiro; 3 = recusado; 4 = sem conexao com o
+# servidor de licencas; outro = nao conseguiu conferir.
+function Conferir-Pacote($painel, $pastaNova) {
+  $node = Achar-Node
+  if (-not $node -or -not (Test-Path -LiteralPath $painel)) { return -1 }
+  foreach ($v in @('NODE_OPTIONS', 'NODE_EXTRA_CA_CERTS', 'NODE_TLS_REJECT_UNAUTHORIZED', 'NODE_DEBUG', 'NODE_V8_COVERAGE')) {
+    Remove-Item -Path ('Env:' + $v) -ErrorAction SilentlyContinue
+  }
+  $argumentos = '"' + $painel + '" --verificar-pacote "' + $pastaNova + '"'
+  try {
+    $p = Start-Process -FilePath $node -ArgumentList $argumentos -NoNewWindow -PassThru
+    $null = $p.Handle
+    if (-not $p.WaitForExit(120000)) {
+      try { $p.Kill() } catch {}
+      return -1
+    }
+    return [int]$p.ExitCode
+  } catch {
+    return -1
+  }
+}
+
 function Sair-Sem-Mudar($texto) {
   if ($texto) { Write-Host $texto }
   if ($Automatico) { exit 0 }
@@ -94,12 +131,16 @@ try {
   if ($Automatico) { Sair-Sem-Mudar "  Sem conexao com a internet agora: abrindo a versao $local, que ja esta aqui." }
   Sair-Sem-Mudar ('  Nao consegui procurar a versao nova (sem internet?): ' + $_.Exception.Message)
 }
-if (-not (Mais-Nova $remota $local)) {
-  Write-Host "  Voce ja esta na versao mais nova ($local)."
-  exit 0
+if ($Reparar) {
+  if (Mais-Nova $local $remota) { Sair-Sem-Mudar "  A versao publicada ($remota) e mais velha que a instalada ($local); nada foi mexido." }
+  Write-Host "  Baixando de novo a versao oficial $remota para reparar os arquivos..."
+} else {
+  if (-not (Mais-Nova $remota $local)) {
+    Write-Host "  Voce ja esta na versao mais nova ($local)."
+    exit 0
+  }
+  Write-Host "  Versao nova encontrada: $remota. Atualizando (leva poucos segundos)..."
 }
-
-Write-Host "  Versao nova encontrada: $remota. Atualizando (leva poucos segundos)..."
 $tmp = Join-Path $env:TEMP ('ttcg-' + [guid]::NewGuid().ToString('N'))
 try {
   New-Item -ItemType Directory -Path $tmp | Out-Null
@@ -114,11 +155,24 @@ try {
     throw 'o pacote baixado veio incompleto'
   }
   $baixada = (Get-Content -LiteralPath (Join-Path $novoApp 'VERSAO.txt') -Raw).Trim([char]0xFEFF).Trim()
-  if (-not (Mais-Nova $baixada $local)) {
+  if (-not $Reparar -and -not (Mais-Nova $baixada $local)) {
     # O GitHub ainda estava entregando o pacote anterior; fica para a proxima.
     Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
     Write-Host "  Voce ja esta na versao mais nova ($local)."
     exit 0
+  }
+
+  # So entra pacote oficial e inteiro. Quem confere e o painel instalado
+  # (perguntando ao servidor de licencas). No reparo, se o painel instalado
+  # estiver danificado demais para conferir, o proprio pacote baixado confere
+  # (tambem perguntando ao servidor).
+  $conferencia = Conferir-Pacote (Join-Path $app 'painel.mjs') $novoApp
+  if ($Reparar -and $conferencia -ne 0 -and $conferencia -ne 3) {
+    $conferencia = Conferir-Pacote (Join-Path $novoApp 'painel.mjs') $novoApp
+  }
+  if ($conferencia -ne 0) {
+    if ($conferencia -eq 4) { throw 'sem conexao com o servidor de licencas para conferir o pacote' }
+    throw 'o pacote baixado nao passou na conferencia (nao e o oficial ou veio danificado)'
   }
 
   $backup = Join-Path $app 'versao-anterior'
