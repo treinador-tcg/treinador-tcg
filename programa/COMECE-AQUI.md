@@ -23,13 +23,13 @@
 1. Duplo clique em `INICIAR TREINADOR TCG` (deixe a janela preta aberta; pode minimizar).
 2. Mudou o deck no jogo? Aba **Decks** → escolha o deck → **Exportar**.
 3. Jogue.
-4. No fim da partida, clique em **Battle Log**.
+4. No fim da partida, clique em **Registro de Batalha**.
 5. A análise aparece no painel em cerca de um minuto.
 
 ## Se algo não funcionar
 
-- **A partida não apareceu:** no painel, "Colar log ou lista" e cole (Ctrl+V).
-- **O painel perguntou "Era um Battle Log?":** clique em "Sim". Ele aprende.
+- **A partida não apareceu:** no painel, "Colar registro ou lista" e cole (Ctrl+V).
+- **O painel perguntou "Era um registro de batalha?":** clique em "Sim". Ele aprende.
 - **Esqueci a senha:** veja "Esqueci a senha" na tela de entrada.
 - **"Limite de uso":** a sua conta do Claude ou do ChatGPT chegou ao limite
   por agora. As análises voltam sozinhas quando renovar.

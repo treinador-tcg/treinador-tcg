@@ -24,12 +24,12 @@
       <div class="quem"><span id="quem-nome" class="quieto">${esc(estado.eu.nome)}</span><button class="botao leve" id="sair">Sair</button></div>
     </div></header>
     <div class="faixa" id="faixa"></div>
-    <main id="conteudo" tabindex="-1"></main>`,$("#sair").onclick=async()=>{await api("POST","/api/sair",{}),estado.eu=null,app.innerHTML="",renderizar()},atualizarFaixa()}let ultimoEventoVisto=null,ultimaConcluidaVista=null;async function atualizarFaixa(){if(!estado.eu||!$("#faixa"))return;let a;try{a=await api("GET","/api/captura")}catch{return}estado.captura=a;const o=a.ativo?"ok":"aviso",e=a.ultimaCaptura,s=e?` <span class="quieto pequeno">\xDAltima captura \xE0s ${new Date(e.em).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}: ${esc(e.resumo)}</span>`:"",t=a.ativo?`Captura ligada. No jogo, clique em <strong>Battle Log</strong> no fim da partida e em <strong>Exportar</strong> quando mudar o deck.${s}`:`${esc(a.mensagem||"Captura autom\xE1tica desligada.")}${s}`;let i="";a.fila.analisandoId?i="O treinador est\xE1 analisando uma partida\u2026":a.fila.aguardando&&(i=`${a.fila.aguardando} partida(s) na fila`);const n=a.fila.ultimaConcluida;if(n&&n.em!==ultimaConcluidaVista){const c=ultimaConcluidaVista===null;ultimaConcluidaVista=n.em;const{tela:p,id:m}=rotaAtual();!c&&!(p==="partida"&&m===n.id)&&(aviso("An\xE1lise pronta."),p==="partidas"&&renderizar())}let r=`<div class="status"><span class="luz ${o}" aria-hidden="true"></span><span>${t}</span><span class="espaco"></span>
+    <main id="conteudo" tabindex="-1"></main>`,$("#sair").onclick=async()=>{await api("POST","/api/sair",{}),estado.eu=null,app.innerHTML="",renderizar()},atualizarFaixa()}let ultimoEventoVisto=null,ultimaConcluidaVista=null;async function atualizarFaixa(){if(!estado.eu||!$("#faixa"))return;let a;try{a=await api("GET","/api/captura")}catch{return}estado.captura=a;const o=a.ativo?"ok":"aviso",e=a.ultimaCaptura,s=e?` <span class="quieto pequeno">\xDAltima captura \xE0s ${new Date(e.em).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}: ${esc(e.resumo)}</span>`:"",t=a.ativo?`Captura ligada. No jogo, clique em <strong>\u201CRegistro de Batalha\u201D</strong> no fim da partida e em <strong>Exportar</strong> quando mudar o deck.${s}`:`${esc(a.mensagem||"Captura autom\xE1tica desligada.")}${s}`;let i="";a.fila.analisandoId?i="O treinador est\xE1 analisando uma partida\u2026":a.fila.aguardando&&(i=`${a.fila.aguardando} partida(s) na fila`);const n=a.fila.ultimaConcluida;if(n&&n.em!==ultimaConcluidaVista){const c=ultimaConcluidaVista===null;ultimaConcluidaVista=n.em;const{tela:p,id:m}=rotaAtual();!c&&!(p==="partida"&&m===n.id)&&(aviso("An\xE1lise pronta."),p==="partidas"&&renderizar())}let r=`<div class="status"><span class="luz ${o}" aria-hidden="true"></span><span>${t}</span><span class="espaco"></span>
     ${i?`<span class="quieto">${a.fila.analisandoId?'<span class="girando mini" aria-hidden="true"></span>':""}${esc(i)}</span>`:""}
-    <button class="botao leve" id="abrir-colar">Colar log ou lista</button></div>`;a.fila.problema&&(r+=`<div class="alerta ruim"><span class="texto">${esc(a.fila.problema)}</span>${estado.eu.papel==="admin"||SEM_CUSTO.includes(estado.motor)?`<a class="botao leve" href="#/config">${estado.eu.papel==="admin"?"Abrir configura\xE7\xF5es":"Abrir minha conta"}</a>`:""}</div>`),a.naoReconhecido&&(r+=`<div class="alerta"><span class="texto">Voc\xEA copiou um texto de ${a.naoReconhecido.linhas} linhas que n\xE3o reconheci (come\xE7a com \u201C${esc(a.naoReconhecido.primeiraLinha)}\u201D). Era um Battle Log?</span>
+    <button class="botao leve" id="abrir-colar">Colar registro ou lista</button></div>`;a.fila.problema&&(r+=`<div class="alerta ruim"><span class="texto">${esc(a.fila.problema)}</span>${estado.eu.papel==="admin"||SEM_CUSTO.includes(estado.motor)?`<a class="botao leve" href="#/config">${estado.eu.papel==="admin"?"Abrir configura\xE7\xF5es":"Abrir minha conta"}</a>`:""}</div>`),a.naoReconhecido&&(r+=`<div class="alerta"><span class="texto">Voc\xEA copiou um texto de ${a.naoReconhecido.linhas} linhas que n\xE3o reconheci (come\xE7a com \u201C${esc(a.naoReconhecido.primeiraLinha)}\u201D). Era um registro de batalha?</span>
       <button class="botao" id="salvar-ultimo">Sim, salvar como partida</button><button class="botao leve" id="descartar-ultimo">N\xE3o era</button></div>`),$("#faixa").innerHTML=r,$("#abrir-colar").onclick=abrirColar,$("#salvar-ultimo")&&($("#salvar-ultimo").onclick=async()=>{const c=await api("POST","/api/captura/salvar-ultimo",{});aviso(c.resumo),c.partidaId&&(location.hash=`#/partida/${c.partidaId}`),atualizarFaixa()},$("#descartar-ultimo").onclick=async()=>{await api("POST","/api/captura/descartar-ultimo",{}),atualizarFaixa()});const d=a.ultimoEvento;if(d&&d.em!==ultimoEventoVisto){const c=ultimoEventoVisto===null;if(ultimoEventoVisto=d.em,!c&&(d.tipo==="partida"||d.tipo==="deck")){aviso(d.resumo);const{tela:p}=rotaAtual();(p==="partidas"||p==="decks"&&d.tipo==="deck")&&renderizar()}}}setInterval(atualizarFaixa,4e3);function abrirColar(){const a=$("#dialogo");a.innerHTML=`<form class="bloco" method="dialog" id="form-colar">
-    <h2>Colar log ou lista de deck</h2>
-    <p class="quieto">Use se a captura autom\xE1tica n\xE3o pegou. Cole aqui o Battle Log (bot\xE3o no fim da partida) ou a lista do deck (bot\xE3o Exportar).</p>
+    <h2>Colar registro de batalha ou lista de deck</h2>
+    <p class="quieto">Use se a captura autom\xE1tica n\xE3o pegou. Cole aqui o registro de batalha (bot\xE3o \u201CRegistro de Batalha\u201D no fim da partida) ou a lista do deck (bot\xE3o Exportar).</p>
     <label class="campo"><span>Texto</span><textarea name="texto" required></textarea></label>
     <p class="erro-form oculto" id="colar-erro"></p>
     <div class="linha-botoes">
@@ -101,7 +101,7 @@
       <ol>
         <li>Antes de jogar, abra seu deck no jogo e clique em <strong>Exportar</strong> (assim eu sei a lista).</li>
         <li>Jogue a partida.</li>
-        <li>No fim, clique em <strong>Battle Log</strong> na tela de resultado.</li>
+        <li>No fim, clique em <strong>\u201CRegistro de Batalha\u201D</strong> na tela de resultado.</li>
         <li>Volte aqui: a an\xE1lise aparece em cerca de um minuto.</li>
       </ol></div>`;return}const s=[...new Set(o.map(i=>i.arquetipo).filter(Boolean))].sort();a.innerHTML=`
     <div class="cabeca"><h1>Partidas</h1><span class="quieto">${o.length} salvas</span></div>
@@ -177,7 +177,7 @@
     ${u}
     <div class="grade-2" style="margin-top:16px">
       <div>${b}
-        <div class="bloco"><details><summary>Battle Log da partida</summary><p class="quieto pequeno" style="margin:8px 0 0">Seu nome aparece como VOC\xCA e o do advers\xE1rio como OPONENTE.</p><pre class="log">${esc(e.log)}</pre></details></div>
+        <div class="bloco"><details><summary>Registro da batalha</summary><p class="quieto pequeno" style="margin:8px 0 0">Seu nome aparece como VOC\xCA e o do advers\xE1rio como OPONENTE.</p><pre class="log">${esc(e.log)}</pre></details></div>
       </div>
       <div>${q}</div>
     </div></div></div>`,document.querySelectorAll("[data-discordar]").forEach(l=>l.onclick=()=>discordar(e,Number(l.dataset.discordar)));const h=$("#trocar-deck");h&&(h.onchange=async()=>{h.value&&(await api("POST",`/api/partidas/${e.id}/deck`,{deckId:h.value}),aviso("Deck da partida atualizado. Use \u201CAnalisar de novo\u201D para refazer a an\xE1lise com ele."),renderizar())});const f=async l=>{$("#reanalisar").disabled=!0,$("#profunda").disabled=!0,travarPartida(e.id,{status:"aguardando",emAndamento:!0,profundo:l,pedidaEm:new Date().toISOString(),naFrente:0});try{const g=await api("POST",`/api/partidas/${e.id}/reanalisar`,{profundo:l});travarPartida(e.id,g)}catch(g){aviso(g.message),telaPartida(a,o)}};$("#reanalisar").onclick=()=>f(!1),$("#profunda").onclick=()=>f(!0),$("#apagar").onclick=async()=>{confirm("Apagar esta partida e a an\xE1lise dela? Isso n\xE3o pode ser desfeito.")&&(await api("DELETE",`/api/partidas/${e.id}`),aviso("Partida apagada."),location.hash="#/partidas")},e.andamento?.emAndamento&&travarPartida(e.id,e.andamento)}const ETAPAS=[["fila","Na fila"],["leitura","Lendo a partida"],["analise","Analisando as jogadas"],["revisao","Revisando os erros"],["conferencia","Conferindo as contas"]],PARADA={sem_plano:a=>({titulo:"An\xE1lise esperando a conex\xE3o",texto:"Conecte a sua conta do Claude ou do ChatGPT para a an\xE1lise continuar.",link:!0}),tentar_depois:a=>({titulo:"An\xE1lise pausada por enquanto",texto:`${a.problema||"A conta chegou ao limite de uso por agora."}${a.proximaTentativa?` Nova tentativa \xE0s ${new Date(a.proximaTentativa).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}.`:""}`,link:!1}),sem_chave:()=>({titulo:"An\xE1lise esperando",texto:"A an\xE1lise espera algu\xE9m entrar com a senha.",link:!1}),teto:()=>({titulo:"An\xE1lise pausada",texto:"O teto de gastos do m\xEAs foi atingido.",link:!0})};function tempoDesde(a){const o=Math.max(0,Math.round((Date.now()-Date.parse(a))/1e3));return o<60?`${o} s`:`${Math.floor(o/60)} min ${String(o%60).padStart(2,"0")} s`}function htmlAndamento(a){const o=PARADA[a.status]?.(a);if(o)return`<div class="andamento-topo"><span class="luz aviso" aria-hidden="true"></span><div><h2>${esc(o.titulo)}</h2></div></div>
@@ -235,7 +235,7 @@
         </div>
         <div class="bloco">
           <h2 style="margin-bottom:10px">Cartas que mais aparecem</h2>
-          <p class="quieto pequeno">Em quantas partidas cada carta apareceu no log (comprada, jogada ou buscada).</p>
+          <p class="quieto pequeno">Em quantas partidas cada carta apareceu no registro da batalha (comprada, jogada ou buscada).</p>
           <table class="lista" style="border:0"><tbody>${[...e.uso].sort((n,r)=>r.partidasEmQueApareceu-n.partidasEmQueApareceu).map(n=>`<tr><td>${esc(n.carta)}</td><td class="num quieto">${n.copias}x</td><td class="num">${n.partidasEmQueApareceu}/${e.estatisticas.partidas||0}</td></tr>`).join("")}</tbody></table>
         </div>
         ${estado.eu.papel==="admin"?'<div class="bloco"><button class="botao perigo" id="apagar-deck">Apagar este deck</button></div>':""}
@@ -359,7 +359,7 @@
             <li>D\xEA duplo clique em <strong>INICIAR TREINADOR TCG</strong> e deixe a janela preta aberta (pode minimizar).</li>
             <li>No jogo, sempre que mudar o deck: aba <strong>Decks</strong>, escolha o deck e clique em <strong>Exportar</strong>.</li>
             <li>Jogue normalmente.</li>
-            <li>No fim da partida, clique em <strong>Battle Log</strong>, logo acima do bot\xE3o Continuar.</li>
+            <li>No fim da partida, clique em <strong>\u201CRegistro de Batalha\u201D</strong>, logo acima do bot\xE3o Continuar.</li>
             <li>Em cerca de um minuto a an\xE1lise aparece em <a href="#/partidas">Partidas</a>.</li>
           </ol></div>
         ${o?`<div class="bloco"><h2 style="margin-bottom:12px">Usar em outro computador</h2>
@@ -373,8 +373,8 @@
           <p class="quieto pequeno">Cada computador tem o pr\xF3prio hist\xF3rico de partidas, e a pessoa usa a conta do Claude ou do ChatGPT dela. Se o pacote for copiado para outro computador, ele n\xE3o funciona l\xE1.</p></div>`:""}
         <div class="bloco"><h2 style="margin-bottom:12px">Se algo n\xE3o funcionar</h2>
           <ul class="simples">
-            <li><strong>A partida n\xE3o apareceu:</strong> use \u201CColar log ou lista\u201D no topo. No jogo, o bot\xE3o Battle Log copia o log; \xE9 s\xF3 colar.</li>
-            <li><strong>Apareceu \u201CEra um Battle Log?\u201D:</strong> clique em \u201CSim\u201D. Eu aprendo o formato e da pr\xF3xima vez salvo sozinho.</li>
+            <li><strong>A partida n\xE3o apareceu:</strong> use \u201CColar registro ou lista\u201D no topo. No jogo, o bot\xE3o \u201CRegistro de Batalha\u201D copia o registro; \xE9 s\xF3 colar.</li>
+            <li><strong>Apareceu \u201CEra um registro de batalha?\u201D:</strong> clique em \u201CSim\u201D. Eu aprendo o formato e da pr\xF3xima vez salvo sozinho.</li>
             <li><strong>Deck n\xE3o identificado:</strong> exporte a lista no jogo e, na partida, use \u201CTrocar o deck desta partida\u201D.</li>
             <li><strong>\u201CLimite de uso\u201D:</strong> a sua conta do Claude ou do ChatGPT chegou ao limite por agora. As an\xE1lises ficam na fila e voltam sozinhas quando o limite renovar.</li>
             <li><strong>\u201CN\xE3o est\xE1 conectado\u201D:</strong> em ${o?"Configura\xE7\xF5es":"Minha conta"}, clique em \u201CConectar meu plano do Claude\u201D ou \u201CConectar minha conta do ChatGPT\u201D e siga a janela que abrir.</li>
@@ -385,7 +385,7 @@
         <div class="bloco"><h2 style="margin-bottom:10px">O que a nota e os s\xEDmbolos querem dizer</h2>
           <ul class="simples">${Object.entries(CLASSES).map(([e,s])=>`<li><b class="t-${e} num">${s.simbolo}</b> ${s.nome}</li>`).join("")}</ul>
           <p class="quieto pequeno" style="margin-top:8px">A nota vai de 0 a 100 e mede as suas decis\xF5es, n\xE3o a sorte: 90 ou mais, quase sem erros; 75 a 89, boa; 60 a 74, erros que pesaram; abaixo de 60, erros que decidiram a partida.</p>
-          <p class="quieto pequeno">Antes de opinar, o treinador refaz cada turno a partir do log e confere as contas (dano, vida, pr\xEAmios e as cartas da sua m\xE3o). Toda jogada marcada como erro passa por uma segunda revis\xE3o. Se discordar de um momento, clique em <strong>Discordo</strong>: a pr\xF3xima an\xE1lise leva o seu motivo em conta.</p></div>
+          <p class="quieto pequeno">Antes de opinar, o treinador refaz cada turno a partir do registro da batalha e confere as contas (dano, vida, pr\xEAmios e as cartas da sua m\xE3o). Toda jogada marcada como erro passa por uma segunda revis\xE3o. Se discordar de um momento, clique em <strong>Discordo</strong>: a pr\xF3xima an\xE1lise leva o seu motivo em conta.</p></div>
         <div class="bloco"><h2 style="margin-bottom:10px">Vers\xF5es</h2><div id="diag" class="quieto pequeno">Carregando\u2026</div></div>
       </div>
     </div>`,api("GET","/api/diagnostico").then(e=>{const s=estado.licenca??{};$("#diag").innerHTML=`<p>Treinador TCG ${esc(e.versao)}. Base com ${e.cartasNaBase} cartas.</p>
