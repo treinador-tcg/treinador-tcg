@@ -1,27 +1,27 @@
 {
  "formato": 1,
  "produto": "treinador-tcg",
- "versao": "1.9.0",
+ "versao": "1.9.1",
  "arquivos": {
   "COMECE-AQUI.md": "b41243f78e38d8d12793357c87ff32df7c625c008d00838f2e93dee3b622a999",
   "CONECTAR-CHATGPT.bat": "6dc2e9e4da1cc2c6f7ce8f5cd08a75f8a205d07e5cf3d44e1a621e045b0bd6b9",
   "CONECTAR-CLAUDE.bat": "172f0e25b1063b8ad28c0565cb85d8730c1422331cb246044eaed5076e787f82",
   "LICENCA.txt": "99e4caffb4cb66fcfc09b8e616294bf1c7494a5a8c262588aae2e744e48bf104",
-  "VERSAO.txt": "30f4611383aa30a15753789f40effde81332f2f8714e6d3b2940bf0fc4592377",
+  "VERSAO.txt": "0ab4fa190ca1b1d1f630ac87cf34672bfbaf1395d0148c7568d38e58335b8d68",
   "cartas/cartas.json": "b3ab7fa5010f831c4357c16ba816d0c2c754d2dafed68bb0a832db767f2b0f87",
   "ferramentas/atualizar.ps1": "718d186eb2fd58e065bc3c22ebd81db9bcd08d1f4d16884843f6dcf5a0e3fb60",
   "ferramentas/captura.ps1": "bbd067b7e5ebf9386cf6f5fbc56f08795cd5f012e5e146dc2e8eb230235607d4",
   "ferramentas/conectar-chatgpt.ps1": "ee633d402473f730fd91baf4f15c828e16b2555975b1ff553224dd3e33a44f1b",
   "ferramentas/conectar-claude.ps1": "2d965006df363a5257b380bd432b3250f60e9e2346b104532d87825de7165218",
-  "ferramentas/gerar-fichas.mjs": "79715fb9476c984655511fee9d28836cfa2b9d6c7ad994e5160b9a27a0c7bbc1",
+  "ferramentas/gerar-fichas.mjs": "5ec170f47fa91937cd9badfcf42c4a64c521fe1f5ae51dd0d7ca7f42511566a0",
   "ferramentas/iniciar.ps1": "d34b3b840e93ec66126e10dd607b62783f4aec6c2e43bf80f51c984f02d961dc",
   "ferramentas/instalar-node.ps1": "09c988cd189d1ea1a5cf0701051d4f8fbb2fe5d63f2f82736d3e66293c8cb85f",
   "ferramentas/janela-comum.ps1": "14d777d7f7db6cd82248ce5430f233089237902767af7ec0d6181e99c9d98a95",
   "ferramentas/migrar.ps1": "c7d5d6eb5b5f0710f261919608413a6d8bf6e738167d7e3a8577110aa8cc19ca",
   "ferramentas/repositorio.txt": "e67d34111ad52915a4a5f6dba5ad2007c9ac174de2765fa705b650ccff8716d3",
-  "package.json": "ec52705fde3d9bfe4a8008c603a87ea7b5b616ed625b2f340768f695c66fb42a",
+  "package.json": "3f8cd3166154a53af73a13176ec70b2c5d8000595a73b7d57e5da459851ebd61",
   "painel.html": "5ddb73347d900569896483ed67e42646a7daf9952ad86983a8ca22a0cd463a36",
-  "painel.mjs": "58eb03a59d9bec83f11c0bf3226b9308a3ca2425cad12385bd13038c8ea96a7d"
+  "painel.mjs": "39bee3ad77350ab530800da644717013d65d199827c5eb7d3a61ec08baf70560"
  },
  "raiz": {
   "INICIAR TREINADOR TCG.bat": "017e61ba749976f5a59f0e467a09385ba126a72aa724df160feba468703115cd"
