@@ -16,6 +16,8 @@ try {
 Remove-Item Env:OPENAI_API_KEY -ErrorAction SilentlyContinue
 Remove-Item Env:CODEX_API_KEY -ErrorAction SilentlyContinue
 $env:CODEX_NON_INTERACTIVE = '1'
+# Pedido "Trocar de conta" do painel: sai da conta atual antes de entrar.
+$trocar = ($env:TTCG_TROCAR_CONTA -eq '1')
 Iniciar-Registro 'conectar-chatgpt'
 $ajuda = 'conectar-chatgpt.log'
 
@@ -36,7 +38,7 @@ function Achar-Codex {
   return $null
 }
 
-Titulo 'Conectar a sua conta do ChatGPT ao Treinador TCG'
+if ($trocar) { Titulo 'Trocar a conta do ChatGPT do Treinador TCG' } else { Titulo 'Conectar a sua conta do ChatGPT ao Treinador TCG' }
 Write-Host '  Sao 2 passos. Nao precisa digitar nada nesta janela.'
 
 $exe = Achar-Codex
@@ -60,12 +62,22 @@ Write-Host ('  Programa: ' + $exe + ' (versao ' + ((& $exe --version) -join ' ')
 try { [System.IO.File]::WriteAllText((Join-Path $script:pastaDados 'codex-caminho.txt'), $exe) } catch {}
 
 & $exe login status *> $null
-if ($LASTEXITCODE -eq 0) {
+$conectado = ($LASTEXITCODE -eq 0)
+if ($conectado -and $trocar) {
+  Write-Host '  Saindo da conta atual neste computador...'
+  & $exe logout *> $null
+  $conectado = $false
+}
+if ($conectado) {
   Passo 'Passo 2 de 2: este computador ja esta conectado a uma conta.'
 } else {
   Passo 'Passo 2 de 2: entrar na sua conta do ChatGPT.'
   Write-Host '  O navegador vai abrir na pagina da OpenAI. Entre com a sua conta do ChatGPT'
   Write-Host '  e confirme. Quando o navegador disser que deu certo, volte ao painel.'
+  if ($trocar) {
+    Write-Host '  Se o navegador entrar direto na conta antiga, saia dela no chatgpt.com'
+    Write-Host '  e clique de novo em Trocar de conta no painel.'
+  }
   Write-Host '  Se o navegador nao abrir, copie o endereco https://auth.openai.com que'
   Write-Host '  aparece abaixo e cole no navegador.'
   Write-Host ''

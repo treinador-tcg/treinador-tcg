@@ -14,6 +14,8 @@ try {
 # Sem chave de API: o login tem de ser o da conta do plano.
 Remove-Item Env:ANTHROPIC_API_KEY -ErrorAction SilentlyContinue
 Remove-Item Env:ANTHROPIC_AUTH_TOKEN -ErrorAction SilentlyContinue
+# Pedido "Trocar de conta" do painel: sai da conta atual antes de entrar.
+$trocar = ($env:TTCG_TROCAR_CONTA -eq '1')
 Iniciar-Registro 'conectar-claude'
 $ajuda = 'conectar-claude.log'
 
@@ -55,13 +57,23 @@ if (-not $exe) {
 Write-Host ('  Programa: ' + $exe + ' (versao ' + ((& $exe --version) -join ' ') + ')')
 
 & $exe auth status *> $null
-if ($LASTEXITCODE -eq 0) {
+$conectado = ($LASTEXITCODE -eq 0)
+if ($conectado -and $trocar) {
+  Write-Host '  Saindo da conta atual neste computador...'
+  & $exe auth logout *> $null
+  $conectado = $false
+}
+if ($conectado) {
   Passo 'Passo 2 de 2: este computador ja esta conectado a uma conta do Claude.'
 } else {
   Passo 'Passo 2 de 2: entrar na sua conta do Claude.'
   Write-Host '  O navegador vai abrir na pagina da Anthropic. Entre com a sua conta do Claude'
   Write-Host '  (a mesma do claude.ai, com plano Pro ou Max) e clique em Autorizar.'
   Write-Host '  Quando o navegador disser que deu certo, volte ao painel.'
+  if ($trocar) {
+    Write-Host '  Se o navegador entrar direto na conta antiga, saia dela no claude.ai'
+    Write-Host '  e clique de novo em Trocar de conta no painel.'
+  }
   Write-Host ''
   & $exe auth login
   & $exe auth status *> $null
