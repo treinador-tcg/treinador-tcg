@@ -1,10 +1,12 @@
 # Treinador TCG
 
-Analisa suas partidas do **Pokémon TCG Live** e mostra tudo num painel no seu
-computador: nota da partida, momentos decisivos com a jogada melhor, o que
+Analisa suas partidas do jogo de cartas online e mostra tudo num painel no
+seu computador: nota da partida, momentos decisivos com a jogada melhor, o que
 fazer contra cada oponente e, depois de algumas partidas, quais cartas trocar
-no deck. As análises usam o seu plano do Claude, a sua conta do ChatGPT ou uma
-chave da API.
+no deck. As análises usam a sua conta do Claude ou do ChatGPT.
+
+Para usar, você precisa de um **código de licença** (TTCG-XXXX-XXXX-XXXX),
+que vale para um computador.
 
 ## Instalar
 
@@ -13,6 +15,7 @@ chave da API.
    de dentro não funciona).
 3. Duplo clique em **`INICIAR TREINADOR TCG`**. Na primeira vez ele baixa o
    que precisa (1 a 3 minutos) e abre o painel no navegador.
+4. Digite o código de licença e clique em **Ativar**.
 
 O passo a passo completo está em `programa/COMECE-AQUI.md` (no painel:
 **Ajuda**).
