@@ -36,10 +36,25 @@ function Copiar-Arvore($de, $para) {
     $rel = $_.FullName.Substring($de.Length).TrimStart('\', '/')
     $primeiro = ($rel -split '[\\/]')[0]
     if ($preservar -contains $primeiro) { return }
+    if ($rel -like '*.antigo') { return }
     $alvo = Join-Path $para $rel
     $pasta = Split-Path -Parent $alvo
     if (-not (Test-Path -LiteralPath $pasta)) { New-Item -ItemType Directory -Path $pasta -Force | Out-Null }
-    Copy-Item -LiteralPath $_.FullName -Destination $alvo -Force
+    Copiar-Arquivo $_.FullName $alvo
+  }
+}
+
+# Um .exe em uso (o atalho "Treinador TCG.exe" fica aberto enquanto o
+# programa roda) nao pode ser sobrescrito, mas pode ser renomeado: o antigo
+# vira "*.antigo" (o iniciar.ps1 apaga na proxima abertura) e o novo entra.
+function Copiar-Arquivo($origem, $alvo) {
+  try {
+    Copy-Item -LiteralPath $origem -Destination $alvo -Force -ErrorAction Stop
+  } catch {
+    if (-not ($alvo -like '*.exe') -or -not (Test-Path -LiteralPath $alvo)) { throw }
+    $velho = $alvo + '.' + [guid]::NewGuid().ToString('N') + '.antigo'
+    Move-Item -LiteralPath $alvo -Destination $velho -Force -ErrorAction Stop
+    Copy-Item -LiteralPath $origem -Destination $alvo -Force -ErrorAction Stop
   }
 }
 

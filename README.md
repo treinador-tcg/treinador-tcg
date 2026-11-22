@@ -10,21 +10,40 @@ que vale para um computador.
 
 ## Instalar
 
+1. Baixe o instalador:
+   **[Instalar-Treinador-TCG.exe](https://github.com/treinador-tcg/treinador-tcg/raw/instalador/Instalar-Treinador-TCG.exe)**.
+2. Abra o arquivo baixado. Se o Windows avisar "O Windows protegeu o
+   computador", clique em **Mais informações → Executar assim mesmo**.
+3. Clique em **Instalar** e, no fim, em **Concluir**. Não pede senha de
+   administrador e leva de 1 a 3 minutos.
+4. O Treinador abre numa janela própria. Digite o código de licença e clique
+   em **Ativar**.
+
+Depois, abra sempre pelo atalho **Treinador TCG** (Área de Trabalho ou menu
+Iniciar). Enquanto estiver aberto, ele fica num ícone ao lado do relógio
+acompanhando as partidas; pode fechar a janela. Para fechar de vez: botão
+direito no ícone → **Sair**.
+
+Para desinstalar: Configurações do Windows → **Aplicativos instalados** →
+Treinador TCG → **Desinstalar** (pergunta se apaga as partidas).
+
+<details><summary>Sem o instalador (pacote ZIP)</summary>
+
 1. Botão verde **Code** → **Download ZIP**.
 2. Botão direito no ZIP → **Extrair Tudo** (abrir o ZIP e arrastar um arquivo
    de dentro não funciona).
-3. Duplo clique em **`INICIAR TREINADOR TCG`**. Na primeira vez ele baixa o
-   que precisa (1 a 3 minutos) e abre o painel no navegador.
-4. Digite o código de licença e clique em **Ativar**.
+3. Duplo clique em **`INICIAR TREINADOR TCG`** e deixe a janela preta aberta
+   enquanto usar. Na primeira vez ele baixa o que precisa (1 a 3 minutos).
+</details>
 
 O passo a passo completo está em `programa/COMECE-AQUI.md` (no painel:
 **Ajuda**).
 
 ## Atualizar
 
-Não precisa fazer nada: toda vez que você abre pelo **`INICIAR TREINADOR
-TCG`**, ele confere se há versão nova e instala sozinho (precisa de internet).
-Partidas, senhas e licença continuam iguais.
+Não precisa fazer nada: toda vez que você abre o Treinador TCG, ele confere se
+há versão nova e instala sozinho (precisa de internet). Partidas, senhas e
+licença continuam iguais.
 
 ---
 
