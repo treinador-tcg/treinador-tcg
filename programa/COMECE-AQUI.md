@@ -30,7 +30,10 @@ janela preta aberta enquanto usar).
    marcou "Abrir junto com o Windows", ele já está aberto.
 2. Mudou o deck no jogo? Aba **Decks** → escolha o deck → **Exportar**.
 3. Jogue.
-4. No fim da partida, clique em **Registro de Batalha**.
+4. No fim da partida, clique em **Registro de Batalha** e depois no ícone
+   **Exportar** (no alto, à direita). Um aviso amarelo por cima do jogo
+   mostra onde clicar, e o CONTINUAR fica coberto até o registro chegar (um
+   clique na caixa escura libera, se quiser seguir sem registrar).
 5. A análise aparece no painel em cerca de um minuto.
 
 Enquanto estiver aberto, o Treinador fica num ícone ao lado do relógio (às
@@ -41,6 +44,8 @@ novo. Para fechar de vez: botão direito no ícone → **Sair**.
 ## Se algo não funcionar
 
 - **A partida não apareceu:** no painel, "Colar registro ou lista" e cole (Ctrl+V).
+- **O aviso amarelo não apareceu:** ele só aparece com o Treinador aberto e o
+  jogo na frente. Confira em Configurações → **Fim da partida**.
 - **O painel perguntou "Era um registro de batalha?":** clique em "Sim". Ele aprende.
 - **Esqueci a senha:** veja "Esqueci a senha" na tela de entrada.
 - **"Limite de uso":** a sua conta do Claude ou do ChatGPT chegou ao limite
