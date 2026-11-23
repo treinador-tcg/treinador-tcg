@@ -48,6 +48,8 @@ function Copiar-Arvore($de, $para) {
 # programa roda) nao pode ser sobrescrito, mas pode ser renomeado: o antigo
 # vira "*.antigo" (o iniciar.ps1 apaga na proxima abertura) e o novo entra.
 function Copiar-Arquivo($origem, $alvo) {
+  # Igual ao que ja esta aqui: nao mexe (um arquivo em uso igual nao trava nada).
+  try { if (Iguais $origem $alvo) { return } } catch {}
   try {
     Copy-Item -LiteralPath $origem -Destination $alvo -Force -ErrorAction Stop
   } catch {

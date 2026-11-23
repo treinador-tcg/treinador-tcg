@@ -87,7 +87,7 @@ function Preparar-Bandeja {
   $procurar = New-Object System.Windows.Forms.ToolStripMenuItem((T 'Procurar vers\u00e3o nova'))
   $procurar.add_Click({ Abrir-Janela '#/ajuda/procurar' })
   [void]$m.Items.Add($procurar)
-  if (Test-Path -LiteralPath $lancador) {
+  if ((Test-Path -LiteralPath $lancador) -or (Test-Path -LiteralPath $CHAVE_INSTALADOR)) {
     [void]$m.Items.Add((New-Object System.Windows.Forms.ToolStripSeparator))
     $ligar = New-Object System.Windows.Forms.ToolStripMenuItem((T 'Abrir junto com o Windows'))
     $ligar.Checked = Liga-Com-Windows
