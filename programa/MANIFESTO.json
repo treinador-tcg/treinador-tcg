@@ -1,21 +1,23 @@
 {
  "formato": 1,
  "produto": "treinador-tcg",
- "versao": "2.1.0",
+ "versao": "2.2.0",
  "arquivos": {
-  "COMECE-AQUI.md": "a552a57ff6153e21526240eb39cab593cdd64ca465d430ffb92c60426a53e99f",
+  "COMECE-AQUI.md": "62e945711ae67e1425466ab339ca5ad0576b14576ce55d9b5a6b133653766981",
   "CONECTAR-CHATGPT.bat": "6dc2e9e4da1cc2c6f7ce8f5cd08a75f8a205d07e5cf3d44e1a621e045b0bd6b9",
   "CONECTAR-CLAUDE.bat": "172f0e25b1063b8ad28c0565cb85d8730c1422331cb246044eaed5076e787f82",
   "LICENCA.txt": "99e4caffb4cb66fcfc09b8e616294bf1c7494a5a8c262588aae2e744e48bf104",
   "Treinador TCG.exe": "9f7a13204911b6120a49f44ee6421ac738a6418bc9292e534684c174d925351f",
-  "VERSAO.txt": "c89b87c262e9d5ffd20e73aac74a1772adcc9f5a21682cc33adcf5086e5fef5c",
+  "VERSAO.txt": "c4a2383a03bdb6739d16a0e24058e4b9c7da4e63d203e0be2f448868cc03c530",
   "cartas/cartas.json": "b3ab7fa5010f831c4357c16ba816d0c2c754d2dafed68bb0a832db767f2b0f87",
+  "ferramentas/abrir.ps1": "1b951a61e73faab4654c62c866acf81cbf3c0de18c3d9cdaa31554dfbe7ccfb8",
+  "ferramentas/atalhos.ps1": "91eb73e8c6aa6922478f3a3f439f3fdd496b788a8994ad971adbb18c37c072ac",
   "ferramentas/atualizar.ps1": "ddf68c5a9996cdafe31a6414c3b081140cfe26469bbcc9ad1266e9ac37786c6d",
   "ferramentas/captura.ps1": "bbd067b7e5ebf9386cf6f5fbc56f08795cd5f012e5e146dc2e8eb230235607d4",
   "ferramentas/conectar-chatgpt.ps1": "ee633d402473f730fd91baf4f15c828e16b2555975b1ff553224dd3e33a44f1b",
   "ferramentas/conectar-claude.ps1": "2d965006df363a5257b380bd432b3250f60e9e2346b104532d87825de7165218",
-  "ferramentas/gerar-fichas.mjs": "affb46c1d8bfd2acd2b192d04856f7b1ebe1826298afe417402c8ad2c790b394",
-  "ferramentas/iniciar.ps1": "fad9abcd09b608a3aa526beba6c7d1bf1c4f0234246d51cd5013c8fd76766c79",
+  "ferramentas/gerar-fichas.mjs": "384a7c25bd2928a68b39bf7356f0c8b13ef5c512afba4dd4f00b6bb00ced054b",
+  "ferramentas/iniciar.ps1": "d661c939eba22c7cc25d9588bb9c2377a3450b9ad2aa2321e48482eb82faa410",
   "ferramentas/instalar-node.ps1": "09c988cd189d1ea1a5cf0701051d4f8fbb2fe5d63f2f82736d3e66293c8cb85f",
   "ferramentas/janela-comum.ps1": "14d777d7f7db6cd82248ce5430f233089237902767af7ec0d6181e99c9d98a95",
   "ferramentas/migrar.ps1": "c7d5d6eb5b5f0710f261919608413a6d8bf6e738167d7e3a8577110aa8cc19ca",
@@ -23,9 +25,9 @@
   "ferramentas/treinador.ico": "f7ae32d22399c7ad5aee99d4c4587d96337fa8d1cd6e4c9d6ff962b65bfcf5d7",
   "ferramentas/vigia.cs": "9e8e3e1dbf13d4e4881922826f51d1d90a54a9f5f2146dda0da6fa607b36ab45",
   "ferramentas/vigia.ps1": "8ff18d868170105fd25dd69d739d5a4689da5d2a586bafb3db66c6c01871c971",
-  "package.json": "bcfb41bca3796f6927cab7f6c3b29893fe8c403f1d2d15ef123fb0602eafd643",
+  "package.json": "4330e80aff8b858b601d58676d992df038c677e8914749e9fab2c512700ba1a9",
   "painel.html": "45a54f1efacf638dd0ad7d37a67b47651a08193f42cad5b4c6903ffcf4b0ee28",
-  "painel.mjs": "d68f6ba344dddf5a6d32738677552b4c7d961d283693fde561ae72c24c4c44ca"
+  "painel.mjs": "9f9c29f6329b704603e832c8941c17b72e64c87391ee820f15be8f2331c1bd7c"
  },
  "raiz": {
   "INICIAR TREINADOR TCG.bat": "017e61ba749976f5a59f0e467a09385ba126a72aa724df160feba468703115cd"

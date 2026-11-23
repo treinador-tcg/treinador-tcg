@@ -1,6 +1,8 @@
 # Abre o Treinador TCG. Chamado de dois jeitos:
-#  - pelo atalho "Treinador TCG" (programa\Treinador TCG.exe, que o instalador
-#    poe na Area de Trabalho e no menu Iniciar), com -Bandeja: sem janela
+#  - pelo atalho "Treinador TCG" (Area de Trabalho e menu Iniciar), que roda o
+#    abrir.ps1 (sem programa proprio, ver atalhos.ps1; o instalador da 2.1.0
+#    ainda cria atalhos para o programa\Treinador TCG.exe, que viram atalhos
+#    novos na primeira abertura), com -Bandeja: sem janela
 #    preta. O programa fica num icone ao lado do relogio, os avisos aparecem
 #    em caixas de mensagem e o painel abre numa janela propria. -SemJanela
 #    (quando abre junto com o Windows) nao abre o painel, so o icone.
@@ -17,7 +19,7 @@
 #     oficial e abre de novo.
 # Codigos de saida: 0 = fechou normalmente; 3 = erro ja explicado (com pausa
 # ou caixa de mensagem). Qualquer outro (1, 2) e inesperado: quem chamou (o
-# INICIAR .bat ou o Treinador TCG.exe) procura uma versao corrigida.
+# INICIAR .bat, o abrir.ps1 ou o Treinador TCG.exe) procura uma versao corrigida.
 param([switch]$JaAtualizou, [switch]$Bandeja, [switch]$SemJanela)
 $ProgressPreference = 'SilentlyContinue'
 
@@ -35,6 +37,9 @@ $lancador = Join-Path $app 'Treinador TCG.exe'
 $CHAVE_LIGAR = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
 $NOME_LIGAR = 'Treinador TCG'
 $CHAVE_INSTALADOR = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\TreinadorTCG'
+# Atalhos sem o Treinador TCG.exe (Linha-Abrir, Atualizar-Atalhos).
+$atalhos = Join-Path $ferramentas 'atalhos.ps1'
+if (Test-Path -LiteralPath $atalhos) { . $atalhos }
 
 try { $Host.UI.RawUI.WindowTitle = 'Treinador TCG' } catch {}
 
@@ -156,7 +161,11 @@ function Mudar-Ligar($ligar) {
     if ($ligar) {
       # Num usuario novo a chave Run pode nao existir ainda.
       if (-not (Test-Path -LiteralPath $CHAVE_LIGAR)) { New-Item -Path $CHAVE_LIGAR -Force -ErrorAction Stop | Out-Null }
-      New-ItemProperty -Path $CHAVE_LIGAR -Name $NOME_LIGAR -Value ('"' + $lancador + '" --ao-ligar') -PropertyType String -Force -ErrorAction Stop | Out-Null
+      # Sem o Treinador TCG.exe (o Controle inteligente de aplicativos do
+      # Windows 11 bloqueia programas sem assinatura): ver atalhos.ps1.
+      $linha = '"' + $lancador + '" --ao-ligar'
+      if (Get-Command Linha-Abrir -ErrorAction SilentlyContinue) { $linha = Linha-Abrir $app -AoLigar }
+      New-ItemProperty -Path $CHAVE_LIGAR -Name $NOME_LIGAR -Value $linha -PropertyType String -Force -ErrorAction Stop | Out-Null
     } else {
       Remove-ItemProperty -Path $CHAVE_LIGAR -Name $NOME_LIGAR -ErrorAction SilentlyContinue
     }
@@ -397,6 +406,11 @@ if (-not $desenvolvimento) {
   # Atalho antigo que estava aberto durante a atualizacao (atualizar.ps1).
   Get-ChildItem -LiteralPath $app -Filter '*.antigo' -Force -ErrorAction SilentlyContinue | ForEach-Object {
     try { Remove-Item -LiteralPath $_.FullName -Force -ErrorAction Stop } catch {}
+  }
+  # Atalhos que abrem o Treinador TCG.exe desta pasta passam a abrir sem ele
+  # (vale tambem para quem abriu pelo INICIAR .bat porque o .exe foi barrado).
+  if (Get-Command Atualizar-Atalhos -ErrorAction SilentlyContinue) {
+    try { $null = Atualizar-Atalhos $app $CHAVE_LIGAR $NOME_LIGAR } catch {}
   }
 }
 

@@ -44,6 +44,10 @@ novo. Para fechar de vez: botão direito no ícone → **Sair**.
 ## Se algo não funcionar
 
 - **A partida não apareceu:** no painel, "Colar registro ou lista" e cole (Ctrl+V).
+- **O Windows bloqueou o instalador** ("vírus detectado" ou "o controle
+  inteligente de aplicativos bloqueou"): o instalador ainda está em análise
+  pela Microsoft. Use o pacote ZIP: no site do Treinador, **Code → Download
+  ZIP**, extraia e abra o **INICIAR TREINADOR TCG**.
 - **O aviso amarelo não apareceu:** ele só aparece com o Treinador aberto e o
   jogo na frente. Confira em Configurações → **Fim da partida**.
 - **O painel perguntou "Era um registro de batalha?":** clique em "Sim". Ele aprende.

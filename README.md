@@ -13,7 +13,10 @@ que vale para um computador.
 1. Baixe o instalador:
    **[Instalar-Treinador-TCG.exe](https://github.com/treinador-tcg/treinador-tcg/raw/instalador/Instalar-Treinador-TCG.exe)**.
 2. Abra o arquivo baixado. Se o Windows avisar "O Windows protegeu o
-   computador", clique em **Mais informações → Executar assim mesmo**.
+   computador", clique em **Mais informações → Executar assim mesmo**. Se
+   ele bloquear o instalador ("vírus detectado" ou "O controle inteligente
+   de aplicativos bloqueou este aplicativo"), use o pacote ZIP abaixo: o
+   instalador ainda está em análise pela Microsoft.
 3. Clique em **Instalar** e, no fim, em **Concluir**. Não pede senha de
    administrador e leva de 1 a 3 minutos.
 4. O Treinador abre numa janela própria. Digite o código de licença e clique
