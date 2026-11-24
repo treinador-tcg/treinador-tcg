@@ -183,9 +183,10 @@
       <summary><span class="num-turno">T${esc(a.turno)}</span><span class="pilula k-${esc(o)}">${CLASSES[o]?.nome??""}${t?" \xB7 decisivo":""}</span><span class="titulo-turno">${esc(a.titulo)}</span></summary>
       <div class="corpo">
         ${seloRevisao(a)?`<div class="classe pequeno t-${esc(o)}" style="margin-bottom:6px">${seloRevisao(a)}</div>`:""}
+        ${a.foraDoAtaque?'<p class="quieto pequeno" style="margin:0 0 6px">O ataque estava certo; este ponto \xE9 sobre outra escolha do turno.</p>':""}
         <dl>
           <dt>Voc\xEA fez</dt><dd>${esc(a.o_que_voce_fez)}</dd>
-          ${s&&(a.sequencia?.length||a.melhor_jogada)?`<dt>Melhor sequ\xEAncia</dt><dd>${r}</dd>`:""}
+          ${s&&(a.sequencia?.length||a.melhor_jogada)?`<dt>${a.foraDoAtaque?"Melhor escolha":"Melhor sequ\xEAncia"}</dt><dd>${r}</dd>`:""}
           ${i?`<dt>Compara\xE7\xE3o</dt><dd>${i}</dd>`:""}
           ${a.por_que?`<dt>Por qu\xEA</dt><dd>${esc(a.por_que)}</dd>`:""}
           ${!s&&a.alternativas?.length?`<dt>Tamb\xE9m valia</dt><dd>${a.alternativas.map(esc).join("<br>")}</dd>`:""}
@@ -402,7 +403,7 @@
       <div>
         <div class="bloco"><h2 style="margin-bottom:10px">O que a nota e os s\xEDmbolos querem dizer</h2>
           <ul class="simples">${Object.entries(CLASSES).map(([s,t])=>`<li><b class="t-${s} num">${t.simbolo}</b> ${t.nome}</li>`).join("")}</ul>
-          <p class="quieto pequeno" style="margin-top:8px">A nota vai de 0 a 100 e mede as suas decis\xF5es, n\xE3o a sorte: 90 ou mais, quase sem erros; 75 a 89, boa; 60 a 74, erros que pesaram; abaixo de 60, erros que decidiram a partida.</p>
+          <p class="quieto pequeno" style="margin-top:8px">A nota mede as suas decis\xF5es, n\xE3o o resultado: d\xE1 para tirar nota alta perdendo e nota baixa ganhando. Ela compara o que voc\xEA fez com as op\xE7\xF5es que voc\xEA tinha em cada turno.</p>
           <p class="quieto pequeno">Antes de opinar, o treinador refaz cada turno a partir do registro da batalha e confere as contas (dano, vida, pr\xEAmios e as cartas da sua m\xE3o). Toda jogada marcada como erro passa por uma segunda revis\xE3o. Se discordar de um momento, clique em <strong>Discordo</strong>: a pr\xF3xima an\xE1lise leva o seu motivo em conta.</p></div>
         <div class="bloco"><h2 style="margin-bottom:10px">Vers\xF5es</h2><div id="diag" class="quieto pequeno">Carregando\u2026</div></div>
       </div>
