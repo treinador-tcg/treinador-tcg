@@ -191,6 +191,7 @@
         ${seloRevisao(a)?`<div class="classe pequeno t-${esc(s)}" style="margin-bottom:6px">${seloRevisao(a)}</div>`:""}
         ${a.foraDoAtaque?'<p class="quieto pequeno" style="margin:0 0 6px">O ataque estava certo; este ponto \xE9 sobre outra escolha do turno.</p>':""}
         ${a.tempoEsgotado?'<p class="quieto pequeno" style="margin:0 0 6px">O tempo do turno acabou e o jogo encerrou o turno. A classifica\xE7\xE3o compara com o que era poss\xEDvel fazer.</p>':""}
+        ${a.avisoContas?`<p class="quieto pequeno" style="margin:0 0 6px">As contas do tabuleiro n\xE3o julgaram este turno: ${esc(a.avisoContas)}. A classifica\xE7\xE3o \xE9 s\xF3 da IA, no m\xE1ximo imprecis\xE3o.</p>`:""}
         <dl>
           <dt>Voc\xEA fez</dt><dd>${esc(a.o_que_voce_fez)}</dd>
           ${t&&(a.sequencia?.length||a.melhor_jogada)?`<dt>${a.foraDoAtaque?"Melhor escolha":"Melhor sequ\xEAncia"}</dt><dd>${l}</dd>`:""}
