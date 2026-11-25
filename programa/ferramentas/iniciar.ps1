@@ -303,12 +303,26 @@ function Esperar {
 }
 
 # Erro ja explicado: na janela preta (com pausa) ou numa caixa de mensagem.
+# Janela preta (o jeito do ZIP): minimizada sem tomar o foco enquanto o painel
+# roda (2.6.7: depois de uma queda de conexao ela ficou na frente do jogo) e
+# de volta quando ha um erro para ler. 7 = minimizar sem ativar; 9 = restaurar.
+function Janela-Console($modo) {
+  try {
+    if (-not ('TreinadorTCG.JanelaConsole' -as [type])) {
+      Add-Type -Namespace TreinadorTCG -Name JanelaConsole -MemberDefinition '[DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow(); [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr h, int cmd);'
+    }
+    $h = [TreinadorTCG.JanelaConsole]::GetConsoleWindow()
+    if ($h -ne [IntPtr]::Zero) { [void][TreinadorTCG.JanelaConsole]::ShowWindow($h, $modo) }
+  } catch {}
+}
+
 function Falhar($linhas) {
   $textos = @($linhas | ForEach-Object { T $_ })
   if ($Bandeja) {
     try { [void](Caixa ($textos -join "`r`n`r`n") 'OK' 'Warning') } catch {}
     Fechar-Bandeja
   } else {
+    Janela-Console 9
     Write-Host ''
     foreach ($l in $textos) { Write-Host ('  ' + $l) }
     Esperar
@@ -462,6 +476,11 @@ if ($Bandeja) {
 }
 $painel = Join-Path $app 'painel.mjs'
 $jaReparou = $false
+if (-not $Bandeja) {
+  Write-Host '  Esta janela fica minimizada na barra de tarefas enquanto o painel roda.'
+  Write-Host ''
+  Janela-Console 7
+}
 while ($true) {
   if ($Bandeja) {
     $codigo = Rodar-Painel-Na-Bandeja
