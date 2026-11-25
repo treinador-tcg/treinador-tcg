@@ -16,11 +16,13 @@
 #  4) Abre o painel. Se o painel pedir (botao "Atualizar agora"), atualiza e
 #     abre de novo, sem abrir outra janela. Se o painel avisar que os arquivos
 #     foram alterados ou estao danificados (codigo 76), baixa de novo a versao
-#     oficial e abre de novo.
+#     oficial e abre de novo, uma vez so por abertura: o iniciar novo recebe
+#     -JaReparou e, se o painel acusar de novo, para e explica (ate a 2.6.7
+#     ele repetia o reparo sem fim).
 # Codigos de saida: 0 = fechou normalmente; 3 = erro ja explicado (com pausa
 # ou caixa de mensagem). Qualquer outro (1, 2) e inesperado: quem chamou (o
 # INICIAR .bat, o abrir.ps1 ou o Treinador TCG.exe) procura uma versao corrigida.
-param([switch]$JaAtualizou, [switch]$Bandeja, [switch]$SemJanela)
+param([switch]$JaAtualizou, [switch]$Bandeja, [switch]$SemJanela, [switch]$JaReparou)
 $ProgressPreference = 'SilentlyContinue'
 
 $ferramentas = $PSScriptRoot
@@ -368,8 +370,11 @@ function Atualizar-Agora {
 }
 
 # Roda o iniciar.ps1 novo (o que acabou de chegar) nesta mesma janela.
-function Abrir-De-Novo {
+# -Reparou: acabou de baixar de novo a versao oficial; o iniciar novo nao
+# repara outra vez.
+function Abrir-De-Novo([switch]$Reparou) {
   $extras = '-JaAtualizou'
+  if ($Reparou) { $extras = $extras + ' -JaReparou' }
   if ($Bandeja) {
     $extras = $extras + ' -Bandeja'
     # O iniciar novo poe o proprio icone.
@@ -475,7 +480,7 @@ if ($Bandeja) {
   if (-not $SemJanela) { Apresentar-Bandeja }
 }
 $painel = Join-Path $app 'painel.mjs'
-$jaReparou = $false
+$jaReparou = [bool]$JaReparou
 if (-not $Bandeja) {
   Write-Host '  Esta janela fica minimizada na barra de tarefas enquanto o painel roda.'
   Write-Host ''
@@ -485,6 +490,7 @@ while ($true) {
   if ($Bandeja) {
     $codigo = Rodar-Painel-Na-Bandeja
   } else {
+    $script:inicioPainel = Get-Date
     & $node $painel
     $codigo = $LASTEXITCODE
   }
@@ -499,12 +505,21 @@ while ($true) {
     continue
   }
   if ($codigo -eq $ARQUIVOS_ALTERADOS) {
-    if (-not $jaReparou -and -not $desenvolvimento) {
+    if ($jaReparou) {
+      # Ja baixou de novo a versao oficial nesta abertura e o painel continua
+      # acusando: nao repete. Mostra o que o painel registrou.
+      $linhas = @('Baixei de novo a vers\u00e3o oficial, mas o Treinador TCG continua acusando arquivos diferentes dela.')
+      $detalhe = Ultimo-Erro
+      if ($detalhe) { $linhas += $detalhe.Replace('\', '\\') }
+      $linhas += 'Feche esta janela e abra de novo mais tarde. Se continuar, instale o Treinador TCG de novo (partidas, senhas e licen\u00e7a continuam).'
+      Falhar $linhas
+    }
+    if (-not $desenvolvimento) {
       $jaReparou = $true
       Write-Host '  Vou baixar de novo a versao oficial do Treinador TCG...'
       Mostrar-Estado 'reparando os arquivos...'
       Avisar-Balao 'Alguns arquivos do Treinador TCG est\u00e3o diferentes do oficial. Baixando de novo a vers\u00e3o oficial...'
-      if ((Rodar-Script (Join-Path $ferramentas 'atualizar.ps1') '-Automatico -Reparar') -eq 10) { Abrir-De-Novo }
+      if ((Rodar-Script (Join-Path $ferramentas 'atualizar.ps1') '-Automatico -Reparar') -eq 10) { Abrir-De-Novo -Reparou }
     }
     Falhar @('N\u00e3o consegui reparar os arquivos do Treinador TCG agora.', 'Conecte o computador \u00e0 internet e abra de novo. Se continuar, instale o Treinador TCG de novo (partidas e senhas continuam).')
   }
