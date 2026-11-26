@@ -828,6 +828,13 @@ namespace TreinadorTCG
         Deteccao ultima = new Deteccao();
         bool emSessao, registradoNaSessao, barreiraLiberada, tocouSom;
         DateTime inicioSessao, ultimoRegistrado = DateTime.MinValue, okAte = DateTime.MinValue;
+        // A tela de resultado as vezes some por 1 a 3 s e volta (o detector
+        // perde uma ou duas fotos). Se a anterior ja estava registrada e sumiu
+        // ha menos de 60 s, e a mesma partida: o aviso nao volta (2.6.10;
+        // nenhuma partida nova termina tao rapido).
+        bool ultimaSessaoRegistrada;
+        DateTime fimUltimaSessao = DateTime.MinValue;
+        const double MESMA_TELA_S = 60;
         Rectangle ultimoCartao = Rectangle.Empty;
         string chaveAviso = "", chaveBarreira = "";
 
@@ -1050,7 +1057,8 @@ namespace TreinadorTCG
             {
                 emSessao = true;
                 inicioSessao = agora;
-                registradoNaSessao = (agora - ultimoRegistrado).TotalSeconds < 45;
+                registradoNaSessao = (agora - ultimoRegistrado).TotalSeconds < 45
+                    || (ultimaSessaoRegistrada && (agora - fimUltimaSessao).TotalSeconds < MESMA_TELA_S);
                 barreiraLiberada = false;
                 tocouSom = false;
                 ultimoCartao = Rectangle.Empty;
@@ -1061,7 +1069,9 @@ namespace TreinadorTCG
                 emSessao = false;
                 double dur = (agora - inicioSessao).TotalSeconds;
                 if (!registradoNaSessao && dur >= 1) Evento("sem_registro", "segundos", (int)dur, "barreiraLiberada", barreiraLiberada);
-                Evento("sessao", "inicio", false, "registrada", registradoNaSessao);
+                Evento("sessao", "inicio", false, "registrada", registradoNaSessao, "segundos", (int)dur);
+                ultimaSessaoRegistrada = registradoNaSessao;
+                fimUltimaSessao = agora;
                 EsconderTudo();
             }
             if (depurar && d != null) Evento("deteccao", "tela", d.Tela, "estavel", estavel, "motivo", d.Motivo, "botao", d.Botao, "continuar", d.Continuar, "exportar", d.Exportar, "painel", d.Painel);
