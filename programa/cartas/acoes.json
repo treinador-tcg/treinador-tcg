@@ -1,5 +1,5 @@
 {
- "sobre": "Treinadores e habilidades traduzidos para ações básicas (vocabulário e conferência em src/acoes.mjs). O campo h é o carimbo do texto oficial traduzido, posto por ferramentas/traduzir-cartas.mjs --carimbar.",
+ "sobre": "Treinadores, habilidades e energias especiais traduzidos para ações básicas (vocabulário e conferência em src/acoes.mjs). O campo h é o carimbo do texto oficial traduzido, posto por ferramentas/traduzir-cartas.mjs --carimbar.",
  "versao": 1,
  "treinadores": {
   "Boss's Orders": { "h": "ba5e9775fc", "acoes": [{ "a": "puxar" }] },
@@ -557,5 +557,24 @@
   "Yanmega ex|Buzzing Boost": { "h": "c01cb03467", "quando": "ativa", "se": [{ "c": "foiParaOAtivoNoTurno" }], "acoes": [{ "a": "ligar", "de": "baralho", "o": { "c": "E", "basica": true, "tipo": "G" }, "n": 3, "em": { "onde": "este" } }] },
   "Zapdos|Flash-Pop Flapping": { "h": ["3443e1842d","1e9b345072"], "quando": "ativa", "se": [{ "c": "temEmJogo", "o": { "nome": "Moltres" } }, { "c": "temEmJogo", "o": { "nome": "Articuno" } }], "acoes": [{ "a": "ligar", "de": "mao", "o": { "c": "E", "basica": true, "tipo": "L" }, "n": 1, "em": { "onde": "este" } }] },
   "Zoroark|Nighttime Byway": { "h": "5b64246b27", "quando": "passiva", "se": [{ "c": "esteNoBanco" }], "acoes": [{ "a": "mod", "t": "recuo", "n": -2, "quem": { "onde": "ativo" } }] }
+ },
+ "energias": {
+  "Ignition Energy": { "h": "5e83866b8c", "fornece": [{ "quem": { "st": "Evolution" }, "n": 3, "tipos": ["C"] }, { "n": 1, "tipos": ["C"] }], "quando": "fimDoTurno", "acoes": [{ "a": "descartaEsta" }] },
+  "Prism Energy": { "h": "6ed5c66581", "fornece": [{ "quem": { "st": "Basic" }, "n": 1, "tipos": "todos" }, { "n": 1, "tipos": ["C"] }] },
+  "Team Rocket's Energy": { "h": "b90cfb06c3", "soEm": { "dono": "Team Rocket's" }, "fornece": [{ "n": 2, "tipos": ["P", "D"], "combinacao": true }] },
+  "Growing Grass Energy": { "h": "5a05a7957d", "fornece": [{ "n": 1, "tipos": ["G"] }], "quando": "passiva", "acoes": [{ "a": "mod", "t": "hp", "n": 20, "quem": { "tipo": "G" } }] },
+  "Rocky Fighting Energy": { "h": "4eaddfca31", "fornece": [{ "n": 1, "tipos": ["F"] }], "quando": "passiva", "acoes": [{ "a": "mod", "t": "previneEfeitos", "quem": { "tipo": "F" } }] },
+  "Telepathic Psychic Energy": { "h": "d188135ea1", "fornece": [{ "n": 1, "tipos": ["P"] }], "quando": "aoLigarDaMao", "acoes": [{ "a": "buscar", "o": [{ "c": "P", "st": "Basic", "tipo": "P" }], "n": 2, "para": "banco", "se": [{ "c": "esteEh", "o": { "tipo": "P" } }] }] },
+  "Bubbly Water Energy": { "h": "d00e87b30f", "fornece": [{ "n": 1, "tipos": ["W"] }], "quando": "passiva", "acoes": [{ "a": "mod", "t": "semCondicoes", "quem": { "tipo": "W" } }] },
+  "Magnetic Metal Energy": { "h": "486bc0cdae", "fornece": [{ "n": 1, "tipos": ["M"] }], "quando": "passiva", "acoes": [{ "a": "mod", "t": "recuo", "zero": true, "quem": { "tipo": "M" } }] },
+  "Nitro Fire Energy": { "h": "7560aa370c", "fornece": [{ "n": 1, "tipos": ["R"] }], "quando": "aoSerDescartadoPorAtaque", "acoes": [{ "a": "voltaParaMao", "se": [{ "c": "esteEh", "o": { "tipo": "R" } }] }] },
+  "Shadowy Darkness Energy": { "h": "5e381290cf", "fornece": [{ "n": 1, "tipos": ["D"] }], "quando": "passiva", "acoes": [{ "a": "mod", "t": "previneDano", "quem": { "tipo": "D", "onde": "banco" } }] },
+  "Voltaic Lightning Energy": { "h": "589ec3cbb3", "fornece": [{ "n": 1, "tipos": ["L"] }], "quando": "passiva", "acoes": [{ "a": "mod", "t": "dano", "n": 20, "quem": { "tipo": "L" } }] },
+  "Mist Energy": { "h": "83ba8f9f48", "fornece": [{ "n": 1, "tipos": ["C"] }], "quando": "passiva", "acoes": [{ "a": "mod", "t": "previneEfeitos" }] },
+  "Neo Upper Energy": { "h": "515ae169c7", "fornece": [{ "quem": { "st": "Stage2" }, "n": 2, "tipos": "todos" }, { "n": 1, "tipos": ["C"] }] },
+  "Boomerang Energy": { "h": "9aee053b44", "fornece": [{ "n": 1, "tipos": ["C"] }], "quando": "aoSerDescartadoPorAtaque", "acoes": [{ "a": "ligar", "de": "descarte", "o": { "nome": "Boomerang Energy" }, "n": 1, "em": { "onde": "este" } }] },
+  "Legacy Energy": { "h": "9cf8bf3af1", "fornece": [{ "n": 1, "tipos": "todos" }], "quando": "passiva", "acoes": [{ "a": "mod", "t": "premios", "n": -1, "porPartida": true }] },
+  "Enriching Energy": { "h": "fa74d4c1a1", "fornece": [{ "n": 1, "tipos": ["C"] }], "quando": "aoLigarDaMao", "acoes": [{ "a": "comprar", "n": 4 }] },
+  "Spiky Energy": { "h": "f07b17cf59", "fornece": [{ "n": 1, "tipos": ["C"] }], "quando": "aoSerDanificadoNoAtivo", "acoes": [{ "a": "contadores", "n": 2, "alvo": "atacante" }] }
  }
 }
